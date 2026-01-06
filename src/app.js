@@ -5,6 +5,8 @@ import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
 import { pinoMiddleware } from './utils/logger.js';
 import { rateLimit } from 'express-rate-limit'
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './swagger.js';
 
 
 
@@ -26,6 +28,10 @@ app.use(limiter);
 app.use(cors());
 app.use(pinoMiddleware);
 app.use(express.json());
+
+// Swagger UI
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get('/docs.json', (req, res) => res.json(swaggerSpec));
 
 app.use(`${API_PREFIX}/auth`, authRoutes);
 app.use(`${API_PREFIX}/users`, userRoutes);
