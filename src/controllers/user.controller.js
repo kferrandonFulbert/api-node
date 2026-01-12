@@ -8,6 +8,7 @@ export const profile = (req, res) => {
 
 export const info = (req, res) => {
   req.log?.info('info endpoint');
+  res.status(200);
   res.json({
     msg: "ok"
   });

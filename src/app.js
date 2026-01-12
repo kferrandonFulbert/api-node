@@ -7,7 +7,7 @@ import { pinoMiddleware } from './utils/logger.js';
 import { rateLimit } from 'express-rate-limit'
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './swagger.js';
-import multer from 'multer';
+//import multer from 'multer';
 
 
 

@@ -11,6 +11,7 @@ const MAX_SIZE = parseInt(process.env.UPLOAD_MAX_SIZE || String(5 * 1024 * 1024)
 // Ensure upload directory exists
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadDir),
   filename: (req, file, cb) => {
@@ -49,7 +50,7 @@ const upload = multer({ storage, fileFilter: imageFileFilter, limits: { fileSize
  *         description: File uploaded
  */
 import { uploadFile } from '../controllers/upload.controller.js';
-
+/*
 router.post('/', (req, res, next) => {
   // Accept either 'file' or 'image' field names for compatibility with clients
   const handler = upload.fields([{ name: 'file', maxCount: 1 }, { name: 'image', maxCount: 1 }]);
@@ -63,8 +64,38 @@ router.post('/', (req, res, next) => {
     uploadFile(req, res, next);
   });
 });
-
+*/
 // Compatibility: accept POST /uploads/:name (allows clients that post to /uploads/<filename>)
+/**
+ * Multer disk storage configuration for handling file uploads.
+ * 
+ * Configures where uploaded files are stored and how they are named.
+ * 
+ * @type {multer.StorageEngine}
+ * 
+ * @description
+ * - **destination**: Files are saved to the `uploadDir` directory
+ * - **filename**: Generated filename follows these rules:
+ *   1. Extracts the base name and extension from `req.params.name` (if provided)
+ *   2. Sanitizes the base name by replacing invalid characters with hyphens
+ *   3. Uses the extension from the request parameter if available
+ *   4. Falls back to the extension from the original uploaded file
+ *   5. If no base name is provided, generates a unique filename using timestamp and random string
+ *   6. Appends the determined extension to create the final filename
+ * 
+ * @example
+ * // Request with custom name: /upload?name=my-document.pdf
+ * // Result: my-document.pdf
+ * 
+ * @example
+ * // Request with invalid characters: /upload?name=my@#$file.txt
+ * // Result: my-----file.txt
+ * 
+ * @example
+ * // Request with no custom name
+ * // Result: 1704067200000-a7f2k9.pdf (timestamp-random + extension)
+ */
+
 const storageWithName = multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadDir),
   filename: (req, file, cb) => {
