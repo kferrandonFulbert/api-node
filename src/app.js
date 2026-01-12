@@ -6,7 +6,7 @@ import userRoutes from './routes/user.routes.js';
 import { pinoMiddleware } from './utils/logger.js';
 import { rateLimit } from 'express-rate-limit'
 import swaggerUi from 'swagger-ui-express';
-import swaggerSpec from './swagger.js';
+import swaggerSpec from './config/swagger.js';
 //import multer from 'multer';
 
 
